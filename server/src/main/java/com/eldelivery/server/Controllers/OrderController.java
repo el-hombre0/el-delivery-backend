@@ -63,16 +63,7 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
-    // @DeleteMapping("/orders/{orderId}")
-    // public ResponseEntity deleteOrder(@PathVariable Long orderId){
-    // Order order = orderRepo.findOrderById(orderId)
-    // .orElseThrow(() -> new ResourceNotFoundException("Order with orderId: "+ orderId +"
-    // doesn't exist"));
-    // orderRepo.deleteById(orderId);
-    // Map<String, Boolean> response = new HashMap<>();
-    // response.get("deleted:", Boolean.TRUE);
-    // return ResponseEntity.ok(response);
-    // }
+
     @DeleteMapping("/orders/{orderId}")
     public ResponseEntity<Map> deleteOrder(@PathVariable Long orderId) {
         Optional<Order> optionalOrder = Optional.of(orderRepo.findOrderById(orderId));

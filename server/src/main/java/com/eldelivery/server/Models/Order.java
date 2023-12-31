@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long orderId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String clientName;
     private String clientSurname;
     private String clientPhone;
