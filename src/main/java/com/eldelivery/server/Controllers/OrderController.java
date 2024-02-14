@@ -24,7 +24,7 @@ import com.eldelivery.server.Exceptions.ResourceNotFoundException;
 
 //@CrossOrigin("*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class OrderController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class OrderController {
         return orderRepo.findOrderById(orderId);
     }
 
-    @PostMapping("/orders")
+    @PostMapping("/neworder")
     public Order postOrder(@RequestBody Order order) {
         return orderRepo.save(order);
     }
