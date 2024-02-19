@@ -40,7 +40,7 @@ public class OrderController {
         return orderRepo.findOrderById(orderId);
     }
 
-    @PostMapping("/neworder")
+    @PostMapping("/orders")
     public Order postOrder(@RequestBody Order order) {
         return orderRepo.save(order);
     }
