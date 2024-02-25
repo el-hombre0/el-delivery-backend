@@ -3,7 +3,6 @@ package com.eldelivery.server.Controllers;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +44,19 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
+    }
+
+    public AuthenticationResponse checkJWT(String jwtString){
+        String jwt = jwtString.substring(7);
+        var userEmail = jwtService.extractUsername(jwt);
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        return AuthenticationResponse.builder()
+                .token(jwt)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())

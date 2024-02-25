@@ -25,4 +25,9 @@ public class AuthController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<AuthenticationResponse> getUserData(@RequestHeader("Authorization") String jwt){
+        return ResponseEntity.ok(service.checkJWT(jwt));
+    }
+
 }
