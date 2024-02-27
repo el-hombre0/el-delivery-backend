@@ -26,8 +26,13 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AuthenticationResponse> getUserData(@RequestHeader("Authorization") String jwt){
+    public ResponseEntity<AuthenticationResponse> getUser(@RequestHeader("Authorization") String jwt){
         return ResponseEntity.ok(service.checkJWT(jwt));
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<UserUpdateResponse> updateUser(@RequestHeader("Authorization") String jwt, @RequestBody UserUpdateRequest request){
+        return ResponseEntity.ok(service.updateUser(jwt, request));
     }
 
 }

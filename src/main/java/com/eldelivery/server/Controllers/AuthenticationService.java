@@ -2,15 +2,12 @@ package com.eldelivery.server.Controllers;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.eldelivery.server.Models.User.Role;
 import com.eldelivery.server.Models.User.User;
 import com.eldelivery.server.Repositories.UserRepository;
 import com.eldelivery.server.Security.JwtService;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -51,7 +48,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse checkJWT(String jwtString){
+    public AuthenticationResponse checkJWT(String jwtString) {
         String jwt = jwtString.substring(7);
         var userEmail = jwtService.extractUsername(jwt);
         var user = userRepository.findByEmail(userEmail).orElseThrow();
@@ -59,6 +56,27 @@ public class AuthenticationService {
                 .token(jwt)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
+    }
+
+    public UserUpdateResponse updateUser(String jwtString, UserUpdateRequest request) {
+        String jwt = jwtString.substring(7);
+        var userEmail = jwtService.extractUsername(jwt);
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        user.setFirstName(request.getFirstname());
+        user.setLastName(request.getLastname());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+        userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        return UserUpdateResponse.builder()
+                .token(jwtToken)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .password(user.getPassword())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .build();
