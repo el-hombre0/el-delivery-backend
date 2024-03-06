@@ -21,8 +21,8 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
-                .firstName(request.getFirstname())
-                .lastName(request.getLastname())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
@@ -31,6 +31,10 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
@@ -65,11 +69,27 @@ public class AuthenticationService {
         String jwt = jwtString.substring(7);
         var userEmail = jwtService.extractUsername(jwt);
         var user = userRepository.findByEmail(userEmail).orElseThrow();
-        user.setFirstName(request.getFirstname());
-        user.setLastName(request.getLastname());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
+        userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        return UserUpdateResponse.builder()
+                .token(jwtToken)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
+    }
+
+    public UserUpdateResponse changeUserPassword(String jwtString, UserPasswordUpdateRequest request) {
+        String jwt = jwtString.substring(7);
+        var userEmail = jwtService.extractUsername(jwt);
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return UserUpdateResponse.builder()

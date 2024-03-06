@@ -35,4 +35,9 @@ public class AuthController {
         return ResponseEntity.ok(service.updateUser(jwt, request));
     }
 
+    @PutMapping("/me/password")
+    public ResponseEntity<UserUpdateResponse> updateUserPassword(@RequestHeader("Authorization") String jwt, @RequestBody UserPasswordUpdateRequest request){
+        return ResponseEntity.ok(service.changeUserPassword(jwt, request));
+    }
+
 }
