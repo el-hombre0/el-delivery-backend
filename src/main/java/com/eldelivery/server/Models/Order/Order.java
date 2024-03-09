@@ -1,10 +1,7 @@
-package com.eldelivery.server.Models;
+package com.eldelivery.server.Models.Order;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.eldelivery.server.Models.User.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
+
     private String clientName;
     private String clientSurname;
     private String clientPhone;
@@ -28,5 +30,12 @@ public class Order {
     private String address;
     private double cost;
     private String paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "MOBILE_GROUP_ID")
+    private User executer;
     
 }
