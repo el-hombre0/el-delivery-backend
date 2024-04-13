@@ -10,6 +10,8 @@ import com.eldelivery.server.Repositories.UserRepository;
 import com.eldelivery.server.Security.JwtService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -100,5 +102,10 @@ public class AuthenticationService {
                 .email(user.getEmail())
                 .role(user.getRole())
                 .build();
+    }
+
+    public UsersResponse getAllUsers(){
+        List<User> usersList = userRepository.findAll();
+        return UsersResponse.builder().usersList(usersList).build();
     }
 }

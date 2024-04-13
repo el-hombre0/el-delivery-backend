@@ -1,10 +1,14 @@
 package com.eldelivery.server.Controllers;
 
+import com.eldelivery.server.Models.User.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -28,6 +32,18 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<AuthenticationResponse> getUser(@RequestHeader("Authorization") String jwt){
         return ResponseEntity.ok(service.checkJWT(jwt));
+    }
+
+    @GetMapping("/all-users")
+    public ResponseEntity getAllUsers(@RequestHeader("Authorization") String jwt){
+        try {
+            service.checkJWT(jwt);
+            return ResponseEntity.ok(service.getAllUsers());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+        }
     }
 
     @PutMapping("/me")

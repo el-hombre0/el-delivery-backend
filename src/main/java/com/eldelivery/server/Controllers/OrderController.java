@@ -1,5 +1,6 @@
 package com.eldelivery.server.Controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +31,13 @@ public class OrderController {
     private OrderRepo orderRepo;
 
     @GetMapping("/orders")
-    public List<Order> getAllOrders() {
-        return orderRepo.findAll();
+    public ResponseEntity<List<Order>> getAllOrders() {
+        try {
+            List<Order> orders = orderRepo.findAll();
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/orders/{orderId}")
