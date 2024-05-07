@@ -36,6 +36,8 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MOBILE_GROUP_ID")
-    private User executer;
-    
+    private User executor;
+
+    private double latitude;
+    private double longitude;
 }

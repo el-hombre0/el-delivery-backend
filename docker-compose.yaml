@@ -1,22 +1,36 @@
 version: '3.8'
 services:
-  app:
-    container_name: app
-    build: .
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
     ports:
-      - '8080:${BACKEND_PORT}'
+      - 8080:${SERVER_PORT}
     restart: on-failure
     depends_on:
-      eldelivery_db:
+      db:
         condition: service_healthy
 
+  client:
+    build:
+      context: ../eldelivery_frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:${CLIENT_PORT}
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
 
-  eldelivery_db:
+  db:
     container_name: ${DATABASE_HOST}
     image: postgres:16
     environment:
@@ -25,7 +39,7 @@ services:
       - POSTGRES_DB=${DATABASE_NAME}
     command: postgres -p ${DATABASE_PORT}
     ports:
-      - ${DATABASE_PORT}:${DATABASE_PORT}
+      - 5432:${DATABASE_PORT}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 10s
