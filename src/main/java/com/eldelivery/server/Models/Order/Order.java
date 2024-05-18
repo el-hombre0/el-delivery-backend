@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @Entity
@@ -31,7 +33,9 @@ public class Order {
     private double distanceToClient;
     private String address;
     private double cost;
-    private String paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -42,4 +46,6 @@ public class Order {
 
     private double latitude;
     private double longitude;
+
+    private LocalDateTime dateTime;
 }

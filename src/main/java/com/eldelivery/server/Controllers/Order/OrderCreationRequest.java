@@ -1,5 +1,6 @@
 package com.eldelivery.server.Controllers.Order;
 
+import com.eldelivery.server.Models.Order.PaymentMethod;
 import com.eldelivery.server.Models.Order.Status;
 import com.eldelivery.server.Models.User.User;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class OrderCreationRequest {
     private double distanceToClient;
     private String address;
     private double cost;
-    private String paymentMethod;
+    private PaymentMethod paymentMethod;
     private Status status;
     private Integer executorId;
     private double latitude;

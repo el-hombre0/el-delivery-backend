@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.eldelivery.server.Models.Order.Order;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -15,6 +17,7 @@ public class OrderService {
     public OrderResponse postOrder(OrderCreationRequest request){
         User user = userRepo.findById(request.getUserId()).orElseThrow();
         User executor = userRepo.findById(request.getExecutorId()).orElseThrow();
+        LocalDateTime currentDateTime = LocalDateTime.now();
         Order order = Order.builder()
                 .id(request.getId())
                 .user(user)
@@ -32,6 +35,7 @@ public class OrderService {
                 .executor(executor)
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
+                .dateTime(currentDateTime)
                 .build();
         orderRepo.save(order);
         return OrderResponse.builder()
@@ -51,6 +55,7 @@ public class OrderService {
                 .executor(order.getExecutor())
                 .latitude(order.getLatitude())
                 .longitude(order.getLongitude())
+                .dateTime(order.getDateTime())
                 .build();
     }
 }

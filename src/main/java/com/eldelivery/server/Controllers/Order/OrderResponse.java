@@ -1,11 +1,14 @@
 package com.eldelivery.server.Controllers.Order;
 
+import com.eldelivery.server.Models.Order.PaymentMethod;
 import com.eldelivery.server.Models.Order.Status;
 import com.eldelivery.server.Models.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -23,9 +26,10 @@ public class OrderResponse {
     private double distanceToClient;
     private String address;
     private double cost;
-    private String paymentMethod;
+    private PaymentMethod paymentMethod;
     private Status status;
     private User executor;
     private double latitude;
     private double longitude;
+    private LocalDateTime dateTime;
 }
