@@ -1,6 +1,6 @@
 package com.eldelivery.server;
 
-import com.eldelivery.server.Controllers.OrderController;
+import com.eldelivery.server.Controllers.Order.OrderController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

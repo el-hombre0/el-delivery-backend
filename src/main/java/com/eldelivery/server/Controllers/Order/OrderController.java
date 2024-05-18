@@ -1,5 +1,6 @@
-package com.eldelivery.server.Controllers;
+package com.eldelivery.server.Controllers.Order;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +26,14 @@ import com.eldelivery.server.Exceptions.ResourceNotFoundException;
 //@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class OrderController {
 
     @Autowired
     private OrderRepo orderRepo;
+
+    private final OrderService service;
+
 
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
@@ -51,9 +56,12 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public Order postOrder(@RequestBody Order order) {
-        return orderRepo.save(order);
+    public ResponseEntity<OrderResponse> postOrder(@RequestBody OrderCreationRequest request) {
+        return ResponseEntity.ok(service.postOrder(request));
     }
+//    public Order postOrder(@RequestBody Order order) {
+//        return orderRepo.save(order);
+//    }
 
     @PutMapping("/orders/{orderId}")
     public ResponseEntity updateOrder(@PathVariable Long orderId, @RequestBody Order orderDetails) {
