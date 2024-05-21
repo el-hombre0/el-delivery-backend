@@ -26,6 +26,7 @@ public class AuthenticationService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
@@ -36,6 +37,7 @@ public class AuthenticationService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .build();
     }
@@ -50,6 +52,7 @@ public class AuthenticationService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .build();
     }
@@ -63,6 +66,7 @@ public class AuthenticationService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .build();
     }
@@ -74,6 +78,7 @@ public class AuthenticationService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
+        user.setPhoneNumber(request.getPhoneNumber());
         user.setRole(request.getRole());
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -81,8 +86,8 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .password(user.getPassword())
                 .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .build();
     }
@@ -98,8 +103,8 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .password(user.getPassword())
                 .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .build();
     }

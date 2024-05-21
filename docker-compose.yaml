@@ -21,7 +21,7 @@ services:
 
   client:
     build:
-      context: ../eldelivery_frontend/
+      context: ../el-delivery-frontend/
       dockerfile: Dockerfile
     ports:
       - 3000:${CLIENT_PORT}

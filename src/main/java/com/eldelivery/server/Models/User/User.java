@@ -1,6 +1,7 @@
 package com.eldelivery.server.Models.User;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -61,12 +62,14 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String email;
+    private String phoneNumber;
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "user")
+//    @JoinColumn(name = "orders", referencedColumnName = "id")
+    private Set<Order> orders = new HashSet<>();
 
 }
