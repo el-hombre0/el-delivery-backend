@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderResponse {
-    private Long id;
     private User user;
     private String clientName;
     private String clientSurname;

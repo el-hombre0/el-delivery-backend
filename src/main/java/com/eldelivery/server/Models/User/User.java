@@ -68,8 +68,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
-//    @JoinColumn(name = "orders", referencedColumnName = "id")
-    private Set<Order> orders = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//    @JoinColumn(name = "orders_list", referencedColumnName = "id")
+    private Set<Order> orders;
 
 }

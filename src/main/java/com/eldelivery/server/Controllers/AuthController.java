@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

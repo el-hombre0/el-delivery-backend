@@ -1,5 +1,6 @@
 package com.eldelivery.server.Controllers.Order;
 
+import com.eldelivery.server.Models.Order.Status;
 import com.eldelivery.server.Models.User.User;
 import com.eldelivery.server.Repositories.OrderRepo;
 import com.eldelivery.server.Repositories.UserRepository;
@@ -14,12 +15,20 @@ import java.time.LocalDateTime;
 public class OrderService {
     private final OrderRepo orderRepo;
     private final UserRepository userRepo;
-    public OrderResponse postOrder(OrderCreationRequest request){
-        User user = userRepo.findById(request.getUserId()).orElseThrow();
-        User executor = userRepo.findById(request.getExecutorId()).orElseThrow();
+
+    public double orderCostCalculation(double requiredKiloWatts, double distanceToClient) {
+        final double patrolConsumption = 14.5;
+        final double kVtPerHourPrice = 6.43;
+        final double carMaintenance = 183.33;
+        final double extraCharge = 5;
+        return (requiredKiloWatts * kVtPerHourPrice + distanceToClient * patrolConsumption + carMaintenance) * extraCharge;
+    }
+
+    public OrderResponse postOrder(OrderCreationRequest request) {
+        User user = userRepo.findByEmail(request.getClientEmail()).orElseThrow();
+//        User executor = userRepo.findById(request.getExecutorId()).orElseThrow();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Order order = Order.builder()
-                .id(request.getId())
                 .user(user)
                 .clientName(request.getClientName())
                 .clientSurname(request.getClientSurname())
@@ -29,17 +38,16 @@ public class OrderService {
                 .requiredKiloWatts(request.getRequiredKiloWatts())
                 .distanceToClient(request.getDistanceToClient())
                 .address(request.getAddress())
-                .cost(request.getCost())
+                .cost(orderCostCalculation(request.getRequiredKiloWatts(), request.getDistanceToClient()))
                 .paymentMethod(request.getPaymentMethod())
-                .status(request.getStatus())
-                .executor(executor)
+                .status(Status.PROCESSING)
+                .executor(null)
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
                 .dateTime(currentDateTime)
                 .build();
         orderRepo.save(order);
         return OrderResponse.builder()
-                .id(order.getId())
                 .user(order.getUser())
                 .clientName(order.getClientName())
                 .clientSurname(order.getClientSurname())

@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderCreationRequest {
-    private Long id;
-    private Integer userId;
     private String clientName;
     private String clientSurname;
     private String clientPhone;

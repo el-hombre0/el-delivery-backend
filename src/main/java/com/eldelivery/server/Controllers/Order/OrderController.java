@@ -2,8 +2,7 @@ package com.eldelivery.server.Controllers.Order;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eldelivery.server.Models.Order.Order;
 import com.eldelivery.server.Repositories.OrderRepo;
@@ -15,15 +14,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 import com.eldelivery.server.Exceptions.ResourceNotFoundException;
 
-//@CrossOrigin("*")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -59,9 +52,6 @@ public class OrderController {
     public ResponseEntity<OrderResponse> postOrder(@RequestBody OrderCreationRequest request) {
         return ResponseEntity.ok(service.postOrder(request));
     }
-//    public Order postOrder(@RequestBody Order order) {
-//        return orderRepo.save(order);
-//    }
 
     @PutMapping("/orders/{orderId}")
     public ResponseEntity updateOrder(@PathVariable Long orderId, @RequestBody Order orderDetails) {
