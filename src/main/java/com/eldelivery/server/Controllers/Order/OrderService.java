@@ -48,6 +48,7 @@ public class OrderService {
                 .build();
         orderRepo.save(order);
         return OrderResponse.builder()
+                .id(order.getId())
                 .user(order.getUser())
                 .clientName(order.getClientName())
                 .clientSurname(order.getClientSurname())
