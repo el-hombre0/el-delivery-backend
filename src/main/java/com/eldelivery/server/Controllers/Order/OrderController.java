@@ -34,6 +34,7 @@ public class OrderController {
             List<Order> orders = orderRepo.findAll();
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println("ERROR:0"+e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

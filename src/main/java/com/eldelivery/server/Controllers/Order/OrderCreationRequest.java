@@ -25,6 +25,6 @@ public class OrderCreationRequest {
     private PaymentMethod paymentMethod;
     private Status status;
     private Integer executorId;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 }

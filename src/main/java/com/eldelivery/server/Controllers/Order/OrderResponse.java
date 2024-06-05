@@ -29,7 +29,7 @@ public class OrderResponse {
     private PaymentMethod paymentMethod;
     private Status status;
     private User executor;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private LocalDateTime dateTime;
 }

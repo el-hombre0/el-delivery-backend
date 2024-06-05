@@ -21,7 +21,7 @@ public class OrderService {
         final double kVtPerHourPrice = 6.43;
         final double carMaintenance = 183.33;
         final double extraCharge = 5;
-        return (requiredKiloWatts * kVtPerHourPrice + distanceToClient * patrolConsumption + carMaintenance) * extraCharge;
+        return Math.ceil((requiredKiloWatts * kVtPerHourPrice + distanceToClient * patrolConsumption + carMaintenance) * extraCharge);
     }
 
     public OrderResponse postOrder(OrderCreationRequest request) {

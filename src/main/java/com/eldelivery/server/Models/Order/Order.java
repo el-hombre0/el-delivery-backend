@@ -44,8 +44,8 @@ public class Order {
     @JoinColumn(name = "executor_id", referencedColumnName = "id")
     private User executor;
 
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
     private LocalDateTime dateTime;
 }
