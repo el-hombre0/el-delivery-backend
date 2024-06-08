@@ -8,5 +8,5 @@ FROM amazoncorretto:17.0.9-al2-native-jdk
 RUN mkdir /app
 
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
-
+COPY ./keystore.p12 /
 ENTRYPOINT ["java", "-jar", "/app/spring-boot-application.jar"]
