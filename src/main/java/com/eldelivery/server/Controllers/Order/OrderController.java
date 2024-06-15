@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.eldelivery.server.Exceptions.ResourceNotFoundException;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -27,63 +26,70 @@ public class OrderController {
 
     private final OrderService service;
 
-
+    /**
+     * Получение всех заказов
+     * @return
+     */
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
         try {
             List<Order> orders = orderRepo.findAll();
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("ERROR:0"+e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * Получение одного заказа
+     * @param orderId
+     * @return
+     */
     @GetMapping("/orders/{orderId}")
-    public Order getOrder(@PathVariable Long orderId) {
-        return orderRepo.findOrderById(orderId);
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long orderId){
+        return ResponseEntity.ok(service.getOrder(orderId));
     }
 
+    /**
+     * Получение всех заказов пользователя
+     * @param userId
+     * @return
+     */
     @GetMapping("/orders/user/{userId}")
-    public List<Order> getUserOrders(@PathVariable Long userId) {
-        return orderRepo.findOrderByUserId(userId);
+    public ResponseEntity<List<OrderResponse>> getUserOrders(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.getUserOrders(userId));
     }
 
+    /**
+     * Создание заказа
+     * @param request
+     * @return
+     */
     @PostMapping("/orders")
     public ResponseEntity<OrderResponse> postOrder(@RequestBody OrderCreationRequest request) {
         return ResponseEntity.ok(service.postOrder(request));
     }
 
+    /**
+     * Изменение заказа
+     * @param orderId
+     * @param orderDetails
+     * @return
+     */
     @PutMapping("/orders/{orderId}")
-    public ResponseEntity updateOrder(@PathVariable Long orderId, @RequestBody Order orderDetails) {
-        Optional<Order> optionalOrder = Optional.of(orderRepo.findOrderById(orderId));
-        Order order = optionalOrder
-                .orElseThrow(() -> new ResourceNotFoundException("Order with id: " + orderId + " doesn't exist"));
-        order.setAddress(orderDetails.getAddress());
-        order.setCarModel(orderDetails.getCarModel());
-        order.setClientEmail(orderDetails.getClientEmail());
-        order.setClientName(orderDetails.getClientName());
-        order.setClientSurname(orderDetails.getClientSurname());
-        order.setClientPhone(orderDetails.getClientPhone());
-        order.setRequiredKiloWatts(orderDetails.getRequiredKiloWatts());
-        order.setDistanceToClient(orderDetails.getDistanceToClient());
-        order.setCost(orderDetails.getCost());
-        order.setPaymentMethod(orderDetails.getPaymentMethod());
-
-        Order updatedOrder = orderRepo.save(order);
-        return ResponseEntity.ok(updatedOrder);
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable Long orderId, @RequestBody Order orderDetails) {
+        return ResponseEntity.ok(service.updateOrder(orderId, orderDetails));
     }
 
 
+        /**
+         * Удаление заказа
+         * @param orderId
+         * @return
+         */
     @DeleteMapping("/orders/{orderId}")
-    public ResponseEntity<Map> deleteOrder(@PathVariable Long orderId) {
-        Optional<Order> optionalOrder = Optional.of(orderRepo.findOrderById(orderId));
-        Order order = optionalOrder
-                .orElseThrow(() -> new ResourceNotFoundException("Order with id: " + orderId + " doesn't exist"));
-        orderRepo.deleteById(orderId);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted:", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Map<String, Boolean>> deleteOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(service.deleteOrder(orderId));
     }
 
 }
